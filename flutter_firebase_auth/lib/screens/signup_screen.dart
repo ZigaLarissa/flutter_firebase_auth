@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_print
 
+import 'dart:js';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_auth/screens/home_screen.dart';
 
 final _auth = FirebaseAuth.instance;
 
@@ -32,7 +35,13 @@ class _SignupPageState extends State<SignupPage> {
         );
         print(existingUser);
       } else {
-        final newUser = await _auth.createUserWithEmailAndPassword(
+        final newUserCredential = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        print(newUserCredential);
+        // After successfully creating the new user, sign in the user
+        final newUser = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -137,7 +146,15 @@ class _SignupPageState extends State<SignupPage> {
                 Container(
                     padding: const EdgeInsets.only(top: 3, left: 3),
                     child: ElevatedButton(
-                      onPressed: onValidate,
+                      onPressed: () {
+                        onValidate();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
                         padding: const EdgeInsets.symmetric(vertical: 16),
