@@ -1,10 +1,8 @@
 // ignore_for_file: avoid_print
-
-import 'dart:js';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth/screens/home_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final _auth = FirebaseAuth.instance;
 
@@ -17,9 +15,12 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  bool isLogin = false;
+  bool _isLogin = false;
   String email = '';
   String password = '';
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  late GoogleSignInAccount _userObj;
 
   Future<void> onValidate() async {
     final isValid = _formKey.currentState!.validate();
@@ -28,7 +29,7 @@ class _SignupPageState extends State<SignupPage> {
     }
     _formKey.currentState!.save();
     try {
-      if (isLogin) {
+      if (_isLogin) {
         final existingUser = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
@@ -52,6 +53,26 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
+  //sign in with Google
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception catch (e) {
+      print('exception->$e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,7 +91,7 @@ class _SignupPageState extends State<SignupPage> {
                   children: <Widget>[
                     const SizedBox(height: 60.0),
                     Text(
-                      isLogin ? "Login" : "Sign up",
+                      _isLogin ? "Login" : "Sign up",
                       style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -81,7 +102,7 @@ class _SignupPageState extends State<SignupPage> {
                       height: 20,
                     ),
                     Text(
-                      isLogin
+                      _isLogin
                           ? "Welcome back! Please login to your account"
                           : "Create your account now",
                       style: TextStyle(fontSize: 15, color: Colors.grey[700]),
@@ -161,7 +182,7 @@ class _SignupPageState extends State<SignupPage> {
                         backgroundColor: Colors.purple,
                       ),
                       child: Text(
-                        !isLogin ? "Sign up" : "Login",
+                        !_isLogin ? "Sign up" : "Login",
                         style:
                             const TextStyle(fontSize: 20, color: Colors.white),
                       ),
@@ -185,7 +206,22 @@ class _SignupPageState extends State<SignupPage> {
                     ],
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _googleSignIn.signIn().then((userData) {
+                        setState(() {
+                          _isLogin = true;
+                          _userObj = userData!;
+                        });
+                      }).catchError((e) {
+                        print(e);
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ),
+                      );
+                    },
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -204,17 +240,17 @@ class _SignupPageState extends State<SignupPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(!isLogin
+                    Text(!_isLogin
                         ? "Already have an account?"
                         : "Don't have an account?"),
                     TextButton(
                         onPressed: () {
                           setState(() {
-                            isLogin = !isLogin;
+                            _isLogin = !_isLogin;
                           });
                         },
                         child: Text(
-                          !isLogin ? "Login" : "Sign up",
+                          !_isLogin ? "Login" : "Sign up",
                           style: const TextStyle(color: Colors.purple),
                         ))
                   ],
