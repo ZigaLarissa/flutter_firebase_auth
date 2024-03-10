@@ -19,7 +19,10 @@ class _SignupPageState extends State<SignupPage> {
   String email = '';
   String password = '';
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId:
+        '290122446372-t1g60eh8e2p1olln8brpt4uts48a8o4i.apps.googleusercontent.com',
+  );
   late GoogleSignInAccount _userObj;
 
   Future<void> onValidate() async {
