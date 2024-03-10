@@ -7,9 +7,10 @@ import 'package:flutter_firebase_auth/models/habit_item.dart';
 import 'package:http/http.dart' as http;
 
 class EditItem extends StatefulWidget {
+  final String userId;
   final HabitItem habitItem;
 
-  const EditItem({super.key, required this.habitItem});
+  const EditItem({super.key, required this.habitItem, required this.userId});
 
   @override
   State<EditItem> createState() => _EditItemState();
@@ -46,7 +47,7 @@ class _EditItemState extends State<EditItem> {
       });
       final url = Uri.https(
           'flutter-firebase-auth-a5753-default-rtdb.firebaseio.com',
-          'habit-items/${widget.habitItem.id}.json');
+          'users/${widget.userId}/habit-items/${widget.habitItem.id}.json');
       final response = await http.put(
         url,
         headers: {

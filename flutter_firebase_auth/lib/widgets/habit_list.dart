@@ -8,7 +8,9 @@ import 'package:flutter_firebase_auth/models/habit_item.dart';
 import 'package:flutter_firebase_auth/widgets/new_item.dart';
 
 class HabitList extends StatefulWidget {
-  const HabitList({super.key});
+  final String userId;
+
+  const HabitList({super.key, required this.userId});
 
   @override
   State<HabitList> createState() => _HabitListState();
@@ -28,7 +30,7 @@ class _HabitListState extends State<HabitList> {
   void _loadedItems() async {
     final url = Uri.https(
         'flutter-firebase-auth-a5753-default-rtdb.firebaseio.com',
-        'habit-items.json');
+        'users/${widget.userId}/habit-items.json');
     final response = await http.get(url);
 
     if (response.statusCode >= 400) {
@@ -37,32 +39,41 @@ class _HabitListState extends State<HabitList> {
       });
     }
 
-    final Map<String, dynamic> listData = json.decode(response.body);
-    final List<HabitItem> loadedItems = [];
-    for (final item in listData.entries) {
-      final category = categories.entries
-          .firstWhere((element) => element.value.name == item.value['category'])
-          .value;
-      loadedItems.add(
-        HabitItem(
-          id: item.key,
-          title: item.value['title'],
-          description: item.value['description'],
-          category: category,
-        ),
-      );
-    }
+    if (response.body != 'null') {
+      final Map<String, dynamic> listData = json.decode(response.body);
+      final List<HabitItem> loadedItems = [];
+      for (final item in listData.entries) {
+        final category = categories.entries
+            .firstWhere(
+                (element) => element.value.name == item.value['category'])
+            .value;
+        loadedItems.add(
+          HabitItem(
+            id: item.key,
+            title: item.value['title'],
+            description: item.value['description'],
+            category: category,
+          ),
+        );
+      }
 
-    setState(() {
-      _habitItems = loadedItems;
-      _isLoading = false;
-    });
+      setState(() {
+        _habitItems = loadedItems;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _addItem() async {
     final newItem = await Navigator.of(context).push<HabitItem>(
       MaterialPageRoute(
-        builder: (context) => const NewItem(),
+        builder: (context) => NewItem(
+          userId: widget.userId,
+        ),
       ),
     );
 
@@ -78,7 +89,7 @@ class _HabitListState extends State<HabitList> {
   void _removeItem(String id) {
     final url = Uri.https(
         'flutter-firebase-auth-a5753-default-rtdb.firebaseio.com',
-        'habit-items/$id.json');
+        'users/${widget.userId}/habit-items/$id.json');
 
     http.delete(url);
     setState(() {
@@ -90,7 +101,8 @@ class _HabitListState extends State<HabitList> {
   void _editItem(HabitItem habitItem) async {
     final editedItem = await Navigator.of(context).push<HabitItem>(
       MaterialPageRoute(
-        builder: (context) => EditItem(habitItem: habitItem),
+        builder: (context) =>
+            EditItem(habitItem: habitItem, userId: widget.userId),
       ),
     );
 

@@ -10,7 +10,8 @@ import 'package:flutter_firebase_auth/models/categories.dart';
 // import 'package:flutter_firebase_auth/models/habit_item.dart';
 
 class NewItem extends StatefulWidget {
-  const NewItem({super.key});
+  final String userId;
+  const NewItem({super.key, required this.userId});
 
   @override
   State<NewItem> createState() => _NewItemState();
@@ -31,7 +32,7 @@ class _NewItemState extends State<NewItem> {
       });
       final url = Uri.https(
           'flutter-firebase-auth-a5753-default-rtdb.firebaseio.com',
-          'habit-items.json');
+          'users/${widget.userId}/habit-items.json');
       final response = await http.post(
         url,
         headers: {

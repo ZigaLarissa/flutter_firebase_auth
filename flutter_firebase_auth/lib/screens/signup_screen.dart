@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_auth/screens/home_screen.dart';
+import 'package:flutter_firebase_auth/widgets/habit_list.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final _auth = FirebaseAuth.instance;
@@ -48,6 +48,17 @@ class _SignupPageState extends State<SignupPage> {
         );
         print(newUser);
       }
+
+      // After successfully signing in or creating a new user
+      final currentUser = _auth.currentUser;
+      final userId = currentUser?.uid;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HabitList(userId: userId!),
+        ),
+      );
     } on FirebaseAuthException catch (err) {
       print(err.message);
     }
@@ -169,12 +180,12 @@ class _SignupPageState extends State<SignupPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         onValidate();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const HabitList(),
+                        //   ),
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
@@ -215,12 +226,12 @@ class _SignupPageState extends State<SignupPage> {
                       }).catchError((e) {
                         print(e);
                       });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const HabitList(),
+                      //   ),
+                      // );
                     },
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
