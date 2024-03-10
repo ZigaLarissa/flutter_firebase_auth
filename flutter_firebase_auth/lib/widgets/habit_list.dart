@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth/data/categories.dart';
+import 'package:flutter_firebase_auth/widgets/edit_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_firebase_auth/models/habit_item.dart';
 import 'package:flutter_firebase_auth/widgets/new_item.dart';
@@ -85,6 +86,23 @@ class _HabitListState extends State<HabitList> {
     });
   }
 
+  //edit item
+  void _editItem(HabitItem habitItem) async {
+    final editedItem = await Navigator.of(context).push<HabitItem>(
+      MaterialPageRoute(
+        builder: (context) => EditItem(habitItem: habitItem),
+      ),
+    );
+
+    if (editedItem != null) {
+      setState(() {
+        final index =
+            _habitItems.indexWhere((item) => item.id == editedItem.id);
+        _habitItems[index] = editedItem;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content = const Center(
@@ -120,7 +138,16 @@ class _HabitListState extends State<HabitList> {
                         },
                         icon: const Icon(Icons.check)),
                   ),
-                  trailing: const Icon(Icons.edit),
+                  trailing: SizedBox(
+                    child: IconButton(
+                        onPressed: () {
+                          _editItem(habitItem);
+                        },
+                        icon: const Icon(Icons.edit)),
+                  ),
+                  onLongPress: () {
+                    _editItem(habitItem);
+                  },
                 ),
               ),
             ),
