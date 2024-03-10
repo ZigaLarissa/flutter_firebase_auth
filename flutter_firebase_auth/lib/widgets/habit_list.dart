@@ -114,7 +114,11 @@ class _HabitListState extends State<HabitList> {
                   subtitle: Text(habitItem.description),
                   leading: CircleAvatar(
                     backgroundColor: habitItem.category.color,
-                    child: const Icon(Icons.check),
+                    child: IconButton(
+                        onPressed: () {
+                          _removeItem(habitItem.id);
+                        },
+                        icon: const Icon(Icons.check)),
                   ),
                   trailing: const Icon(Icons.edit),
                 ),
