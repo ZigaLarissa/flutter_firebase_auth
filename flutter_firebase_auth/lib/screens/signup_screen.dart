@@ -1,8 +1,6 @@
 // ignore_for_file: avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_auth/screens/home_screen.dart';
 
 final _auth = FirebaseAuth.instance;
 
@@ -15,9 +13,15 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  bool isLogin = false;
+  bool _isLogin = false;
   String email = '';
   String password = '';
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId:
+        '290122446372-t1g60eh8e2p1olln8brpt4uts48a8o4i.apps.googleusercontent.com',
+  );
+  late GoogleSignInAccount _userObj;
 
   Future<void> onValidate() async {
     final isValid = _formKey.currentState!.validate();
@@ -26,21 +30,58 @@ class _SignupPageState extends State<SignupPage> {
     }
     _formKey.currentState!.save();
     try {
-      if (isLogin) {
+      if (_isLogin) {
         final existingUser = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
         print(existingUser);
       } else {
-        final newUser = await _auth.createUserWithEmailAndPassword(
+        final newUserCredential = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        print(newUserCredential);
+        // After successfully creating the new user, sign in the user
+        final newUser = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
         print(newUser);
       }
+
+      // After successfully signing in or creating a new user
+      final currentUser = _auth.currentUser;
+      final userId = currentUser?.uid;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HabitList(userId: userId!),
+        ),
+      );
     } on FirebaseAuthException catch (err) {
       print(err.message);
+    }
+  }
+
+  //sign in with Google
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception catch (e) {
+      print('exception->$e');
     }
   }
 
@@ -62,7 +103,7 @@ class _SignupPageState extends State<SignupPage> {
                   children: <Widget>[
                     const SizedBox(height: 60.0),
                     Text(
-                      isLogin ? "Login" : "Sign up",
+                      _isLogin ? "Login" : "Sign up",
                       style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -73,7 +114,7 @@ class _SignupPageState extends State<SignupPage> {
                       height: 20,
                     ),
                     Text(
-                      isLogin
+                      _isLogin
                           ? "Welcome back! Please login to your account"
                           : "Create your account now",
                       style: TextStyle(fontSize: 15, color: Colors.grey[700]),
@@ -138,21 +179,14 @@ class _SignupPageState extends State<SignupPage> {
                 Container(
                     padding: const EdgeInsets.only(top: 3, left: 3),
                     child: ElevatedButton(
-                      onPressed: () {
-                        onValidate();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                        );
-                      },
+                      onPressed: onValidate,
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         backgroundColor: Colors.purple,
                       ),
                       child: Text(
-                        !isLogin ? "Sign up" : "Login",
+                        !_isLogin ? "Sign up" : "Login",
                         style:
                             const TextStyle(fontSize: 20, color: Colors.white),
                       ),
@@ -176,7 +210,22 @@ class _SignupPageState extends State<SignupPage> {
                     ],
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _googleSignIn.signIn().then((userData) {
+                        setState(() {
+                          _isLogin = true;
+                          _userObj = userData!;
+                        });
+                      }).catchError((e) {
+                        print(e);
+                      });
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const HabitList(),
+                      //   ),
+                      // );
+                    },
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -195,17 +244,17 @@ class _SignupPageState extends State<SignupPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(!isLogin
+                    Text(!_isLogin
                         ? "Already have an account?"
                         : "Don't have an account?"),
                     TextButton(
                         onPressed: () {
                           setState(() {
-                            isLogin = !isLogin;
+                            _isLogin = !_isLogin;
                           });
                         },
                         child: Text(
-                          !isLogin ? "Login" : "Sign up",
+                          !_isLogin ? "Login" : "Sign up",
                           style: const TextStyle(color: Colors.purple),
                         ))
                   ],

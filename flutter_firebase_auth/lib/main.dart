@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth/screens/signup_screen.dart';
@@ -12,6 +13,9 @@ void main() async {
       projectId: 'flutter-firebase-auth-a5753',
     ),
   );
+
+  // Initialize the GoogleAuthProvider
+  //await GoogleAuthProvider.ensureInitialized();
   runApp(const MainApp());
 }
 
