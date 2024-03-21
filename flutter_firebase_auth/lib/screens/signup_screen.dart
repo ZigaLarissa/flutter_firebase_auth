@@ -1,4 +1,6 @@
 // ignore_for_file: avoid_print
+// import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth/widgets/habit_list.dart';
@@ -94,14 +96,28 @@ class _SignupPageState extends State<SignupPage> {
       home: Scaffold(
         body: Center(
           child: Container(
+            color: const Color(0xFF2FD1C5).withOpacity(0.1),
             padding: const EdgeInsets.all(20),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                  height: 200,
-                  width: 200,
+                Container(
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
+                      Container(
+                        height: 150,
+                        width: 150,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("../images/logo.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       const Text(
                         "My Study Life",
                         style: TextStyle(
@@ -111,7 +127,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       const Text(
                         "Create a unique emotional story that\n describes better than words",
@@ -119,14 +135,12 @@ class _SignupPageState extends State<SignupPage> {
                             TextStyle(fontSize: 15, color: Color(0xFF585A66)),
                         textAlign: TextAlign.center,
                       ),
-                      Container(
-                        color: const Color.fromARGB(255, 5, 5, 5),
-                        height: 100,
-                        width: 100,
-                      )
                     ],
                   ),
                 ),
+                // const SizedBox(
+                //   height: 100,
+                // ),
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -141,8 +155,7 @@ class _SignupPageState extends State<SignupPage> {
                     ],
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Column(
                         children: <Widget>[
@@ -220,79 +233,89 @@ class _SignupPageState extends State<SignupPage> {
                                 password = newValue!;
                               },
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 40),
                           ],
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          left: 3,
-                        ),
-                        child: ElevatedButton(
-                          onPressed: onValidate,
-                          style: ElevatedButton.styleFrom(
-                            shape: const StadiumBorder(),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: const Color(0xFF2FD1C5),
-                          ),
-                          child: Text(
-                            !_isLogin ? "Sign up" : "Login",
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      const Center(child: Text("Or")),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: const Color(0xFF2FD1C5),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: const Offset(
-                                  0, 1), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            _googleSignIn.signIn().then((userData) {
-                              setState(() {
-                                _isLogin = true;
-                                _userObj = userData!;
-                              });
-                            }).catchError((e) {
-                              print(e);
-                            });
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const HabitList(),
-                            //   ),
-                            // );
-                          },
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(width: 18),
-                              Text(
-                                "Sign In with Google",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF2FD1C5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 45,
+                            width: 150,
+                            child: ElevatedButton(
+                              onPressed: onValidate,
+                              style: ElevatedButton.styleFrom(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
                                 ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                backgroundColor: const Color(0xFF2FD1C5),
                               ),
-                            ],
+                              child: Text(
+                                !_isLogin ? "Sign up" : "Login",
+                                style: const TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(width: 10),
+                          const Center(child: Text("Or")),
+                          const SizedBox(width: 10),
+                          Container(
+                            height: 45,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: const Color(0xFF2FD1C5),
+                              ),
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _googleSignIn.signIn().then((userData) {
+                                  setState(() {
+                                    _isLogin = true;
+                                    _userObj = userData!;
+                                  });
+                                }).catchError((e) {
+                                  print(e);
+                                });
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => const HabitList(),
+                                //   ),
+                                // );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                backgroundColor: const Color(0xFF2FD1C5),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Google",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
