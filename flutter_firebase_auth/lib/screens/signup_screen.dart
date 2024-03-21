@@ -92,175 +92,229 @@ class _SignupPageState extends State<SignupPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SingleChildScrollView(
+        body: Center(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            height: MediaQuery.of(context).size.height - 50,
-            width: double.infinity,
+            padding: const EdgeInsets.all(20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    const SizedBox(height: 60.0),
-                    Text(
-                      _isLogin ? "Login" : "Sign up",
-                      style: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.purple,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      _isLogin
-                          ? "Welcome back! Please login to your account"
-                          : "Create your account now",
-                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
-                Form(
-                  key: _formKey,
+              children: [
+                SizedBox(
+                  height: 200,
+                  width: 200,
                   child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Email",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              borderSide: BorderSide.none),
-                          fillColor: Colors.purple.withOpacity(0.1),
-                          filled: true,
-                          prefixIcon: const Icon(Icons.email),
+                    children: [
+                      const Text(
+                        "My Study Life",
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF00394C),
                         ),
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              !value.contains('@')) {
-                            return 'Please enter a valid email address';
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          email = newValue!;
-                        },
                       ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Password",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              borderSide: BorderSide.none),
-                          fillColor: Colors.purple.withOpacity(0.1),
-                          filled: true,
-                          prefixIcon: const Icon(Icons.password),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value.trim().length < 7) {
-                            return 'A password must be at least 7 characters long';
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          password = newValue!;
-                        },
+                      const SizedBox(
+                        height: 20,
                       ),
+                      const Text(
+                        "Create a unique emotional story that\n describes better than words",
+                        style:
+                            TextStyle(fontSize: 15, color: Color(0xFF585A66)),
+                        textAlign: TextAlign.center,
+                      ),
+                      Container(
+                        color: const Color.fromARGB(255, 5, 5, 5),
+                        height: 100,
+                        width: 100,
+                      )
                     ],
                   ),
                 ),
                 Container(
-                    padding: const EdgeInsets.only(top: 3, left: 3),
-                    child: ElevatedButton(
-                      onPressed: onValidate,
-                      style: ElevatedButton.styleFrom(
-                        shape: const StadiumBorder(),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Colors.purple,
-                      ),
-                      child: Text(
-                        !_isLogin ? "Sign up" : "Login",
-                        style:
-                            const TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    )),
-                const Center(child: Text("Or")),
-                Container(
-                  height: 45,
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(
-                      color: Colors.purple,
-                    ),
-                    boxShadow: [
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
                       BoxShadow(
-                        color: Colors.white.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                        offset:
-                            const Offset(0, 1), // changes position of shadow
+                        color: Colors.grey,
+                        blurRadius: 20.0,
+                        offset: Offset(0, 10),
                       ),
                     ],
                   ),
-                  child: TextButton(
-                    onPressed: () {
-                      _googleSignIn.signIn().then((userData) {
-                        setState(() {
-                          _isLogin = true;
-                          _userObj = userData!;
-                        });
-                      }).catchError((e) {
-                        print(e);
-                      });
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const HabitList(),
-                      //   ),
-                      // );
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 18),
-                        Text(
-                          "Sign In with Google",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.purple,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Text(
+                            _isLogin ? "Login" : "Sign up",
+                            style: const TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2FD1C5),
+                            ),
+                          ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+                          Text(
+                            _isLogin
+                                ? "Welcome back! Please login to your account"
+                                : "Create your account now",
+                            style: TextStyle(
+                                fontSize: 15, color: Colors.grey[700]),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(height: 20),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Email",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                    borderSide: BorderSide.none),
+                                fillColor:
+                                    const Color(0xFF2FD1C5).withOpacity(0.1),
+                                filled: true,
+                                prefixIcon: const Icon(Icons.email),
+                              ),
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    !value.contains('@')) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) {
+                                email = newValue!;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Password",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                    borderSide: BorderSide.none),
+                                fillColor:
+                                    const Color(0xFF2FD1C5).withOpacity(0.1),
+                                filled: true,
+                                prefixIcon: const Icon(Icons.password),
+                              ),
+                              obscureText: true,
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.trim().length < 7) {
+                                  return 'A password must be at least 7 characters long';
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) {
+                                password = newValue!;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          left: 3,
+                        ),
+                        child: ElevatedButton(
+                          onPressed: onValidate,
+                          style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder(),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            backgroundColor: const Color(0xFF2FD1C5),
+                          ),
+                          child: Text(
+                            !_isLogin ? "Sign up" : "Login",
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      const Center(child: Text("Or")),
+                      Container(
+                        height: 45,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          border: Border.all(
+                            color: const Color(0xFF2FD1C5),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 1,
+                              offset: const Offset(
+                                  0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            _googleSignIn.signIn().then((userData) {
+                              setState(() {
+                                _isLogin = true;
+                                _userObj = userData!;
+                              });
+                            }).catchError((e) {
+                              print(e);
+                            });
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const HabitList(),
+                            //   ),
+                            // );
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 18),
+                              Text(
+                                "Sign In with Google",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF2FD1C5),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(!_isLogin
+                              ? "Already have an account?"
+                              : "Don't have an account?"),
+                          TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isLogin = !_isLogin;
+                                });
+                              },
+                              child: Text(
+                                !_isLogin ? "Login" : "Sign up",
+                                style:
+                                    const TextStyle(color: Color(0xFF2FD1C5)),
+                              ))
+                        ],
+                      )
+                    ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(!_isLogin
-                        ? "Already have an account?"
-                        : "Don't have an account?"),
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _isLogin = !_isLogin;
-                          });
-                        },
-                        child: Text(
-                          !_isLogin ? "Login" : "Sign up",
-                          style: const TextStyle(color: Colors.purple),
-                        ))
-                  ],
-                )
               ],
             ),
           ),
