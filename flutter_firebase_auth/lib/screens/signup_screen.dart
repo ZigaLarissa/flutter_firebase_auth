@@ -58,12 +58,12 @@ class _SignupPageState extends State<SignupPage> {
       final currentUser = _auth.currentUser;
       final userId = currentUser?.uid;
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HabitList(userId: userId!),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => HabitList(userId: userId!),
+      //   ),
+      // );
     } on FirebaseAuthException catch (err) {
       print(err.message);
     }
