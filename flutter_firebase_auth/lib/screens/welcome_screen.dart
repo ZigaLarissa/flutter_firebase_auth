@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_auth/screens/signup_screen.dart';
 
-class MainPage extends StatelessWidget {
-  const MainPage({super.key});
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class MainPage extends StatelessWidget {
                             Image.asset('../images/main_dots.png'),
                             const SizedBox(height: 120),
                             const Text(
-                              'Task Manager',
+                              'Goal Keeper',
                               style: TextStyle(
                                 fontSize: 32,
                                 fontWeight: FontWeight.bold,
@@ -41,7 +42,7 @@ class MainPage extends StatelessWidget {
                             const SizedBox(height: 20),
                             const Text(
                               textAlign: TextAlign.center,
-                              'Manage your class tasks and attendences easily and \nefficiently with Task Manager.Get started now!',
+                              '"I am not really a Goal Keeper,\n I am just here to keep your goals for you."\n - said by a Goal Keeper.',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -50,7 +51,12 @@ class MainPage extends StatelessWidget {
                             const SizedBox(height: 120),
                             ElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/home');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignupPage(),
+                                  ),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF2FD1C5),

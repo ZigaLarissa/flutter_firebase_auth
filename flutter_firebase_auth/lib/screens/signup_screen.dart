@@ -58,12 +58,12 @@ class _SignupPageState extends State<SignupPage> {
       final currentUser = _auth.currentUser;
       final userId = currentUser?.uid;
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => HabitList(userId: userId!),
-      //   ),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HabitList(userId: userId!),
+        ),
+      );
     } on FirebaseAuthException catch (err) {
       print(err.message);
     }
@@ -119,7 +119,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 20,
                       ),
                       const Text(
-                        "My Study Life",
+                        "Goal Keeper",
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -130,7 +130,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 10,
                       ),
                       const Text(
-                        "Create a unique emotional story that\n describes better than words",
+                        "Time to keep your goals innit?",
                         style:
                             TextStyle(fontSize: 15, color: Color(0xFF585A66)),
                         textAlign: TextAlign.center,

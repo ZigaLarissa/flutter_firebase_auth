@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_auth/screens/agenda_screen.dart';
-import 'package:flutter_firebase_auth/screens/main_screen.dart';
-import 'package:flutter_firebase_auth/screens/signup_screen.dart';
+import 'package:flutter_firebase_auth/screens/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +25,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AgendaPage(),
+      home: WelcomePage(),
     );
   }
 }
