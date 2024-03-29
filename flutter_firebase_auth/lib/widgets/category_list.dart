@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth/data/categories.dart';
 import 'package:flutter_firebase_auth/models/categories.dart';
 import 'package:flutter_firebase_auth/widgets/habit_list.dart';
-import 'package:flutter_firebase_auth/widgets/new_item.dart';
 
 class CategoryList extends StatelessWidget {
   final String userId;
