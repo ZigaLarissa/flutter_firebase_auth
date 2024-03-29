@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth/data/categories.dart';
+import 'package:flutter_firebase_auth/models/categories.dart';
 import 'package:flutter_firebase_auth/widgets/edit_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_firebase_auth/models/habit_item.dart';
@@ -9,8 +10,9 @@ import 'package:flutter_firebase_auth/widgets/new_item.dart';
 
 class HabitList extends StatefulWidget {
   final String userId;
+  final Category? selectedCategory;
 
-  const HabitList({super.key, required this.userId});
+  const HabitList({super.key, required this.userId, this.selectedCategory});
 
   @override
   State<HabitList> createState() => _HabitListState();
@@ -47,14 +49,17 @@ class _HabitListState extends State<HabitList> {
             .firstWhere(
                 (element) => element.value.name == item.value['category'])
             .value;
-        loadedItems.add(
-          HabitItem(
-            id: item.key,
-            title: item.value['title'],
-            description: item.value['description'],
-            category: category,
-          ),
-        );
+        if (widget.selectedCategory == null ||
+            category == widget.selectedCategory) {
+          loadedItems.add(
+            HabitItem(
+              id: item.key,
+              title: item.value['title'],
+              description: item.value['description'],
+              category: category,
+            ),
+          );
+        }
       }
 
       setState(() {
@@ -73,6 +78,7 @@ class _HabitListState extends State<HabitList> {
       MaterialPageRoute(
         builder: (context) => NewItem(
           userId: widget.userId,
+          selectedCategory: widget.selectedCategory,
         ),
       ),
     );
@@ -118,7 +124,7 @@ class _HabitListState extends State<HabitList> {
   @override
   Widget build(BuildContext context) {
     Widget content = const Center(
-      child: Text('No items yet!'),
+      child: Text('No goals have been added yet!'),
     );
 
     if (_isLoading) {
@@ -174,17 +180,31 @@ class _HabitListState extends State<HabitList> {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Your Habits'), actions: [
-          IconButton(
-            onPressed: _addItem,
-            icon: const Icon(Icons.add),
-          )
-        ]),
-        body: content,
-      ),
+    return Scaffold(
+      appBar: AppBar(
+          title: widget.selectedCategory != null
+              ? Text(
+                  widget.selectedCategory!.name,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                )
+              : const Text(
+                  'Your Habits',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+          backgroundColor: const Color(0xFF2FD1C5),
+          actions: [
+            IconButton(
+              onPressed: _addItem,
+              icon: const Icon(Icons.add),
+            )
+          ]),
+      body: content,
     );
   }
 }

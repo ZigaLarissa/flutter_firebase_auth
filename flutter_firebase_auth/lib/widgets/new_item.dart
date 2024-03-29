@@ -11,7 +11,8 @@ import 'package:flutter_firebase_auth/models/categories.dart';
 
 class NewItem extends StatefulWidget {
   final String userId;
-  const NewItem({super.key, required this.userId});
+  final Category? selectedCategory;
+  const NewItem({super.key, required this.userId, this.selectedCategory});
 
   @override
   State<NewItem> createState() => _NewItemState();
@@ -21,8 +22,14 @@ class _NewItemState extends State<NewItem> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
   var _enteredDescription = '';
-  var _selectedCategory = categories[Categories.all]!;
+  late Category _selectedCategory;
   var _isSending = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCategory = widget.selectedCategory ?? categories[Categories.all]!;
+  }
 
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
@@ -67,7 +74,14 @@ class _NewItemState extends State<NewItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add a New Item')),
+      appBar: AppBar(
+        title: const Text('Add a New Goal',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: const Color(0xFF2FD1C5),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: Form(
@@ -76,11 +90,19 @@ class _NewItemState extends State<NewItem> {
               // mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 40),
+                const Text(
+                  'Enter the details of the new Goal:',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 TextFormField(
                     maxLength: 50,
                     decoration: const InputDecoration(
                       labelText: 'Title',
-                      hintText: 'Enter the title of the item',
+                      hintText: 'Enter the title of the Goal',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null ||
@@ -98,7 +120,10 @@ class _NewItemState extends State<NewItem> {
                     maxLength: 100,
                     decoration: const InputDecoration(
                       labelText: 'Description',
-                      hintText: 'Enter the description of the item',
+                      hintText: 'Enter the description of the Goal',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null ||
@@ -143,7 +168,7 @@ class _NewItemState extends State<NewItem> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
                 Center(
                   child: TextButton(
                     onPressed: _isSending
@@ -151,20 +176,41 @@ class _NewItemState extends State<NewItem> {
                         : () {
                             _formKey.currentState!.reset();
                           },
-                    child: const Text('Reset Item'),
+                    child: const Text(
+                      'Reset Input Fields',
+                      style: TextStyle(
+                        color: Color(0xFF2FD1C5),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Center(
                   child: ElevatedButton(
                     onPressed: _isSending ? null : _saveItem,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2FD1C5),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50,
+                        vertical: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
                     child: _isSending
                         ? const SizedBox(
                             width: 16,
                             height: 16,
                             child: CircularProgressIndicator(),
                           )
-                        : const Text('Save Item'),
+                        : const Text(
+                            'Save Goal',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                   ),
                 ),
               ],
