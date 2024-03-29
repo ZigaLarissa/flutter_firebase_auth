@@ -82,139 +82,146 @@ class _NewItemState extends State<NewItem> {
                 fontWeight: FontWeight.bold)),
         backgroundColor: const Color(0xFF2FD1C5),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Form(
-            key: _formKey,
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 40),
-                const Text(
-                  'Enter the details of the new Goal:',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                TextFormField(
-                    maxLength: 50,
-                    decoration: const InputDecoration(
-                      labelText: 'Title',
-                      hintText: 'Enter the title of the Goal',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 40),
+                    const Text(
+                      'Enter the details of the new Goal:',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          value.trim().length <= 1 ||
-                          value.trim().length > 50) {
-                        return 'Must be between 1 and 50 characters long.';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _enteredName = value!;
-                    }),
-                TextFormField(
-                    maxLength: 100,
-                    decoration: const InputDecoration(
-                      labelText: 'Description',
-                      hintText: 'Enter the description of the Goal',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                    TextFormField(
+                        maxLength: 50,
+                        decoration: const InputDecoration(
+                          labelText: 'Title',
+                          hintText: 'Enter the title of the Goal',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.trim().length <= 1 ||
+                              value.trim().length > 50) {
+                            return 'Must be between 1 and 50 characters long.';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _enteredName = value!;
+                        }),
+                    TextFormField(
+                      maxLength: 100,
+                      decoration: const InputDecoration(
+                        labelText: 'Description',
+                        hintText: 'Enter the description of the Goal',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
                       ),
-                    ),
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          value.trim().length <= 1 ||
-                          value.trim().length > 100) {
-                        return 'Must be between 1 and 100 characters long.';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _enteredDescription = value!;
-                    }),
-                Center(
-                  child: SizedBox(
-                    width: 200,
-                    height: 50,
-                    child: DropdownButtonFormField(
-                      value: _selectedCategory,
-                      items: [
-                        for (final category in categories.entries)
-                          DropdownMenuItem(
-                            value: category.value,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 24,
-                                  height: 24,
-                                  color: category.value.color,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(category.value.name),
-                              ],
-                            ),
-                          )
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCategory = value!;
-                        });
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.trim().length <= 1 ||
+                            value.trim().length > 100) {
+                          return 'Must be between 1 and 100 characters long.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredDescription = value!;
                       },
                     ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                Center(
-                  child: TextButton(
-                    onPressed: _isSending
-                        ? null
-                        : () {
-                            _formKey.currentState!.reset();
+                    Center(
+                      child: SizedBox(
+                        width: 200,
+                        height: 50,
+                        child: DropdownButtonFormField(
+                          value: _selectedCategory,
+                          items: [
+                            for (final category in categories.entries)
+                              DropdownMenuItem(
+                                value: category.value,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 24,
+                                      height: 24,
+                                      color: category.value.color,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(category.value.name),
+                                  ],
+                                ),
+                              )
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = value!;
+                            });
                           },
-                    child: const Text(
-                      'Reset Input Fields',
-                      style: TextStyle(
-                        color: Color(0xFF2FD1C5),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: _isSending ? null : _saveItem,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2FD1C5),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 50,
-                        vertical: 20,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    child: _isSending
-                        ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(),
-                          )
-                        : const Text(
-                            'Save Goal',
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                    const SizedBox(height: 40),
+                    Center(
+                      child: TextButton(
+                        onPressed: _isSending
+                            ? null
+                            : () {
+                                _formKey.currentState!.reset();
+                              },
+                        child: const Text(
+                          'Reset Input Fields',
+                          style: TextStyle(
+                            color: Color(0xFF2FD1C5),
                           ),
-                  ),
-                ),
-              ],
-            )),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: _isSending ? null : _saveItem,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2FD1C5),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 50,
+                            vertical: 20,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: _isSending
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(),
+                              )
+                            : const Text(
+                                'Save Goal',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+        ),
       ),
     );
   }

@@ -13,24 +13,23 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 80),
             const Text(
               "Choose Category",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF2FD1C5),
+                color: Color.fromARGB(255, 7, 7, 7),
               ),
             ),
             const Text(
               textAlign: TextAlign.left,
-              "Select a category to get started with your goals filtering. \n Filter your goals by category to get a better view of your goals.",
+              "Filter your goals by category to get a better view of your goals.",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black54,
               ),
             ),
-            const SizedBox(height: 20),
             SizedBox(
               width: 400,
               child: CategoryList(userId: userId),

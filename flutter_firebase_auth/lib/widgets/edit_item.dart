@@ -85,99 +85,133 @@ class _EditItemState extends State<EditItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Item')),
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: _titleController,
-                maxLength: 50,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  hintText: 'Enter the title of the item',
-                ),
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.trim().length <= 1 ||
-                      value.trim().length > 50) {
-                    return 'Must be between 1 and 50 characters long.';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _titleController?.text = value!;
-                },
-              ),
-              TextFormField(
-                controller: _descriptionController,
-                maxLength: 100,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  hintText: 'Enter the description of the item',
-                ),
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.trim().length <= 1 ||
-                      value.trim().length > 100) {
-                    return 'Must be between 1 and 100 characters long.';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _descriptionController?.text = value!;
-                },
-              ),
-              Center(
-                child: SizedBox(
-                  width: 200,
-                  height: 50,
-                  child: DropdownButtonFormField(
-                    value: _selectedCategory,
-                    items: [
-                      for (final category in categories.entries)
-                        DropdownMenuItem(
-                          value: category.value,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 24,
-                                height: 24,
-                                color: category.value.color,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(category.value.name),
-                            ],
-                          ),
-                        )
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedCategory = value;
-                      });
+      appBar: AppBar(
+        title: const Text('Edit Goal',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: const Color(0xFF2FD1C5),
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 40),
+                  TextFormField(
+                    controller: _titleController,
+                    maxLength: 50,
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                      hintText: 'Enter the title of the item',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          value.trim().length <= 1 ||
+                          value.trim().length > 50) {
+                        return 'Must be between 1 and 50 characters long.';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _titleController?.text = value!;
                     },
                   ),
-                ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _descriptionController,
+                    maxLength: 100,
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      hintText: 'Enter the description of the item',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          value.trim().length <= 1 ||
+                          value.trim().length > 100) {
+                        return 'Must be between 1 and 100 characters long.';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _descriptionController?.text = value!;
+                    },
+                  ),
+                  Center(
+                    child: SizedBox(
+                      width: 200,
+                      height: 50,
+                      child: DropdownButtonFormField(
+                        value: _selectedCategory,
+                        items: [
+                          for (final category in categories.entries)
+                            DropdownMenuItem(
+                              value: category.value,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    color: category.value.color,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(category.value.name),
+                                ],
+                              ),
+                            )
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedCategory = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 70),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: _isSending ? null : _saveItem,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF2FD1C5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 50,
+                          vertical: 20,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: _isSending
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(),
+                            )
+                          : const Text('Save Item',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _isSending ? null : _saveItem,
-                  child: _isSending
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(),
-                        )
-                      : const Text('Save Item'),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

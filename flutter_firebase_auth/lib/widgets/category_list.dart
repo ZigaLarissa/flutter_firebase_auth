@@ -16,7 +16,7 @@ class CategoryList extends StatelessWidget {
         Category category = categories.values.toList()[index];
         return Container(
           height: 60,
-          margin: const EdgeInsets.all(4),
+          margin: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             border: Border.all(color: category.color),
             borderRadius: BorderRadius.circular(8),
@@ -26,7 +26,7 @@ class CategoryList extends StatelessWidget {
             children: [
               ListTile(
                 contentPadding: const EdgeInsets.only(left: 8, right: 8),
-                leading: Image.asset(category.image),
+                leading: Image.asset(category.image, width: 40, height: 40),
                 title: Text(category.name),
                 onTap: () {
                   Navigator.push(

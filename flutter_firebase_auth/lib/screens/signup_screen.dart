@@ -101,251 +101,257 @@ class _SignupPageState extends State<SignupPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(
-          child: Container(
-            color: const Color(0xFF2FD1C5).withOpacity(0.1),
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 150,
-                        width: 150,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("../images/logo.png"),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "Goal Keeper",
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF00394C),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Time to keep your goals innit?",
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xFF585A66)),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-                // const SizedBox(
-                //   height: 100,
-                // ),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 20.0,
-                        offset: Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            _isLogin ? "Login" : "Sign up",
-                            style: const TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF2FD1C5),
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Center(
+              child: Container(
+                color: const Color(0xFF2FD1C5).withOpacity(0.1),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 150,
+                            width: 150,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("images/logo.png"),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          // const SizedBox(
-                          //   height: 10,
-                          // ),
-                          Text(
-                            _isLogin
-                                ? "Welcome back! Please login to your account"
-                                : "Create your account now",
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            "Goal Keeper",
                             style: TextStyle(
-                                fontSize: 15, color: Colors.grey[700]),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF00394C),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            "Time to keep your goals innit?",
+                            style: TextStyle(
+                                fontSize: 15, color: Color(0xFF585A66)),
                             textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // const SizedBox(
+                    //   height: 100,
+                    // ),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 20.0,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Text(
+                                _isLogin ? "Login" : "Sign up",
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF2FD1C5),
+                                ),
+                              ),
+                              // const SizedBox(
+                              //   height: 10,
+                              // ),
+                              Text(
+                                _isLogin
+                                    ? "Welcome back! Please login to your account"
+                                    : "Create your account now",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.grey[700]),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              children: <Widget>[
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: "Email",
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(18),
+                                        borderSide: BorderSide.none),
+                                    fillColor: const Color(0xFF2FD1C5)
+                                        .withOpacity(0.1),
+                                    filled: true,
+                                    prefixIcon: const Icon(Icons.email),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        !value.contains('@')) {
+                                      return 'Please enter a valid email address';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (newValue) {
+                                    email = newValue!;
+                                  },
+                                ),
+                                const SizedBox(height: 10),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: "Password",
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(18),
+                                        borderSide: BorderSide.none),
+                                    fillColor: const Color(0xFF2FD1C5)
+                                        .withOpacity(0.1),
+                                    filled: true,
+                                    prefixIcon: const Icon(Icons.password),
+                                  ),
+                                  obscureText: true,
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value.trim().length < 7) {
+                                      return 'A password must be at least 7 characters long';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (newValue) {
+                                    password = newValue!;
+                                  },
+                                ),
+                                const SizedBox(height: 40),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 45,
+                                width: 100,
+                                child: ElevatedButton(
+                                  onPressed: onValidate,
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                    ),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
+                                    backgroundColor: const Color(0xFF2FD1C5),
+                                  ),
+                                  child: Text(
+                                    !_isLogin ? "Sign up" : "Login",
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Center(child: Text("Or")),
+                              const SizedBox(width: 10),
+                              Container(
+                                height: 45,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                    color: const Color(0xFF2FD1C5),
+                                  ),
+                                ),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    _googleSignIn.signIn().then((userData) {
+                                      setState(() {
+                                        _isLogin = true;
+                                        _userObj = userData!;
+                                      });
+                                    }).catchError((e) {
+                                      print(e);
+                                    });
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => const HabitList(),
+                                    //   ),
+                                    // );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                    ),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
+                                    backgroundColor: const Color(0xFF2FD1C5),
+                                  ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Google",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(!_isLogin
+                                  ? "Already have an account?"
+                                  : "Don't have an account?"),
+                              TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isLogin = !_isLogin;
+                                    });
+                                  },
+                                  child: Text(
+                                    !_isLogin ? "Login" : "Sign up",
+                                    style: const TextStyle(
+                                        color: Color(0xFF2FD1C5)),
+                                  ))
+                            ],
                           )
                         ],
                       ),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          children: <Widget>[
-                            const SizedBox(height: 20),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                hintText: "Email",
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(18),
-                                    borderSide: BorderSide.none),
-                                fillColor:
-                                    const Color(0xFF2FD1C5).withOpacity(0.1),
-                                filled: true,
-                                prefixIcon: const Icon(Icons.email),
-                              ),
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty ||
-                                    !value.contains('@')) {
-                                  return 'Please enter a valid email address';
-                                }
-                                return null;
-                              },
-                              onSaved: (newValue) {
-                                email = newValue!;
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                hintText: "Password",
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(18),
-                                    borderSide: BorderSide.none),
-                                fillColor:
-                                    const Color(0xFF2FD1C5).withOpacity(0.1),
-                                filled: true,
-                                prefixIcon: const Icon(Icons.password),
-                              ),
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty ||
-                                    value.trim().length < 7) {
-                                  return 'A password must be at least 7 characters long';
-                                }
-                                return null;
-                              },
-                              onSaved: (newValue) {
-                                password = newValue!;
-                              },
-                            ),
-                            const SizedBox(height: 40),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 45,
-                            width: 150,
-                            child: ElevatedButton(
-                              onPressed: onValidate,
-                              style: ElevatedButton.styleFrom(
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                ),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                backgroundColor: const Color(0xFF2FD1C5),
-                              ),
-                              child: Text(
-                                !_isLogin ? "Sign up" : "Login",
-                                style: const TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          const Center(child: Text("Or")),
-                          const SizedBox(width: 10),
-                          Container(
-                            height: 45,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                color: const Color(0xFF2FD1C5),
-                              ),
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _googleSignIn.signIn().then((userData) {
-                                  setState(() {
-                                    _isLogin = true;
-                                    _userObj = userData!;
-                                  });
-                                }).catchError((e) {
-                                  print(e);
-                                });
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => const HabitList(),
-                                //   ),
-                                // );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                ),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                backgroundColor: const Color(0xFF2FD1C5),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Google",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(!_isLogin
-                              ? "Already have an account?"
-                              : "Don't have an account?"),
-                          TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isLogin = !_isLogin;
-                                });
-                              },
-                              child: Text(
-                                !_isLogin ? "Login" : "Sign up",
-                                style:
-                                    const TextStyle(color: Color(0xFF2FD1C5)),
-                              ))
-                        ],
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
