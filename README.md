@@ -9,13 +9,13 @@ Goal Keeper is a task management application that helps you organize and track y
 1. **Clone the Repository**: Start by cloning the Goal Keeper repository from GitHub.
 
    ```
-   git clone 
+   git clone https://github.com/ZigaLarissa/flutter_firebase_auth.git
    ```
 
 2. **Install Dependencies**: Navigate to the project directory and install the required dependencies using your preferred package manager (e.g., npm, yarn).
 
    ```
-   cd goal-keeper
+   cd flutter_firebase_auth
    npm install
    ```
 
